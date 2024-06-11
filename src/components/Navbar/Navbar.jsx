@@ -1,7 +1,18 @@
-import React from 'react'
+import React ,{useState}from 'react'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
+    const [search, setSearch] = useState('')
+
+    const handleSearch = (e) => {
+        setSearch(e.target.value)
+    }
+
+    const searchNews = (e)=>{
+        e.preventDefault();
+        window.open('/search-result/' + search, '_self')
+
+    }
     return (
         <>
             <nav className='w-full h-[80px] bg-[#1F1F1F]' >
@@ -24,7 +35,7 @@ const Navbar = () => {
                     </div>
                     <div className='flex items-center gap-5'>
                         <div className="container1">
-                            <input type="text" name="text" className="input" required="" placeholder="Type to search news..." />
+                            <input type="text" name="text" className="input" onKeyDown={(e) => e.key === 'Enter' && searchNews(e)} required="" value={search} onChange={handleSearch} placeholder="Type to search news..." />
                             <div className="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="ionicon" viewBox="0 0 512 512">
                                     <title>Search</title>

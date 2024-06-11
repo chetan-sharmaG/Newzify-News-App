@@ -14,20 +14,20 @@ const Homepage = () => {
     return (
         <div className='w-full'>
             <Navbar />
-        <div className='lg:w-[90vw] w-[90vw] mx-auto'>
-            <Header />
-            <TopHeadline />
-            <LatestNews />
-            <Global />
-            <Picks />
-            <div className='flex w-full lg:flex-row flex-col mt-40 h-fit'>
-                <Business />
-                <Sports />
+            <div className='lg:w-[90vw] w-[90vw] mx-auto'>
+                <Header />
+                <TopHeadline />
+                <LatestNews />
+                <Global />
+                <Picks />
+                <div className='flex w-full lg:flex-row flex-col mt-40 h-fit'>
+                    <Business />
+                    <Sports />
+                </div>
+                <NewzifyCreators />
+                <Subscribe />
+                <Footer />
             </div>
-            <NewzifyCreators />
-            <Subscribe />
-            <Footer />
-        </div>
         </div>
 
     )
