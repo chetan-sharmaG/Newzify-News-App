@@ -5,6 +5,7 @@ import pickednewsReducer from "./slice/pickedNews"
 import businessnewsReducer from "./slice/businessnews"
 import sportsnewsReducer from "./slice/sportsnews"
 import miscelleneousnewsReducer from "./slice/miscelleneousnews"
+import gnewsHeadlinesReducer from "./slice/gnewsHeadlines"
 
 export const store  = configureStore({
     reducer:{
@@ -13,7 +14,8 @@ export const store  = configureStore({
         pickednews:pickednewsReducer,
         businessnews:businessnewsReducer,
         sportnews:sportsnewsReducer,
-        miscelleneousnews:miscelleneousnewsReducer
+        miscelleneousnews:miscelleneousnewsReducer,
+        gnews:gnewsHeadlinesReducer
     }
 });
 

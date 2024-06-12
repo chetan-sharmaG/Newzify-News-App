@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
+import { useSelector,useDispatch } from 'react-redux';  
+import { fetch_gnews_headlines } from '../../Redux/slice/gnewsHeadlines';
 
 
 const SearchBlog = () => {
 
-    const controller = new AbortController();
-    const signal = controller.signal;
+    const dispatch = useDispatch()
+    const gnewsHeadlines = useSelector((state) => state.gnews)
+    
 
     const { search } = useParams()
     const [searchText, setsearchText] = useState(search)
@@ -16,17 +18,29 @@ const SearchBlog = () => {
         "articles": []
     })
     const [topHeadlines, settopHeadlines] = useState({
-        "loading": true,
+        "isloading": true,
         "totalArticles": 0,
-        "articles": []
+        "articles": [],
+        "isError":false
     })
 
     useEffect(() => {
-
+        
+        
+        
         //  fetchSearchNews ()
-        fetchTopHeadlines()
-        console.log("effect")
+        // fetchTopHeadlines()
+        
     }, [])
+
+    useEffect(() => {
+        if(gnewsHeadlines.data.length > 0){
+            settopHeadlines(gnewsHeadlines.data)
+        }else{
+            console.log("dispatching")
+            dispatch(fetch_gnews_headlines())
+        }
+    },[gnewsHeadlines.isloading])
 
     const fetchTopHeadlines = async () => {
         var headline = {
@@ -313,10 +327,10 @@ const SearchBlog = () => {
                             )
                         })}
                 </div>
-                <div className={`w-[26%]  gap-4 overflow-y-clip ${searchResponse.articles.length > 0 ? "" : "h-[500px]"}  justify-start flex flex-col  `}>
+                <div className={`w-[26%]  gap-4 overflow-y-clip ${searchResponse.length > 0 ? "" : "h-[500px]"}  justify-start flex flex-col  `}>
                     <h1 className='text-xl'>Top Headlines</h1>
-                    {topHeadlines.articles.length > 0 &&
-                       topHeadlines.articles.map((item, index) => {
+                    {topHeadlines.length > 0 &&
+                       topHeadlines.map((item, index) => {
                            return (
                            
                             <a key={item.url} href='{item.url}' target='_blank' className='flex group flex-row w-full p-1 gap-2 h-[100px] '>
