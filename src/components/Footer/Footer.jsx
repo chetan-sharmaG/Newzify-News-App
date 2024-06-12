@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 const Footer = () => {
     return (
         <>  
-        <div className=' flex flex-col gap-9 justify-center h-[180px]'>
+        <div className=' px-10 bg-[#EEEAEA] flex flex-col gap-9 justify-center h-[180px]'>
 
             <div className='flex w-full sm:flex-row flex-col  items-center justify-between '>
                 <div className='flex flex-col sm:w-[40%] sm:mb-0 mb-10 w-full] sm:text-start text-center text-sm gap-1 text-red-600'>

@@ -9,10 +9,10 @@ const NewsSearch = () => {
             <div className='relative'>
 
                 <Navbar />
-                <div className='w-[90vw] min-screen  mx-auto'>
+                <div className='w-[90vw] min-h-screen  mx-auto'>
                     <SearchBlog />
                 </div>
-                <div className='w-full absolute bottom-0 px-10 bg-[#EEEAEA] '>
+                <div className='w-full  px-10 bg-[#EEEAEA] '>
                     <Footer />
 
                 </div>

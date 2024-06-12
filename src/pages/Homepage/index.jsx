@@ -25,9 +25,9 @@ const Homepage = () => {
                     <Sports />
                 </div>
                 <NewzifyCreators />
-                <Subscribe />
-                <Footer />
+                {/* <Subscribe /> */}
             </div>
+                <Footer />
         </div>
 
     )
