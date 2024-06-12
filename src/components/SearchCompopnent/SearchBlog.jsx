@@ -28,7 +28,7 @@ const SearchBlog = () => {
         
         
         
-        //  fetchSearchNews ()
+         fetchSearchNews ()
         // fetchTopHeadlines()
         
     }, [])
