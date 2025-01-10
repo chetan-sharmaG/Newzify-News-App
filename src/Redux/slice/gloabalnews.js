@@ -4,7 +4,6 @@ import axios from 'axios';
 
 export const fetch_global_news = createAsyncThunk("fetchglobalnews", async () => {
     const res = await axios.get("https://newzify-backend.vercel.app/");
-    // const data = await res.json();
     return res.data;
 });
 
