@@ -8,13 +8,16 @@ const LatestNews = () => {
 
     const dispatch = useDispatch()
     const [latestNews, setLatestNews] = useState(null)
-
+    const [error, setError] = useState(false)
     const latestNewsState = useSelector((state) => state.latestnews)
 
     useEffect(() => {
-        if (latestNewsState.data.length > 0) {
+        if (!latestNewsState.isError) {
             setLatestNews(latestNewsState.data)
-        } else {
+        } 
+        else if(latestNewsState.isError){
+            setError(true)
+        }else {
             dispatch(fetch_latest_news())
             console.log("calling dispatch")
         }

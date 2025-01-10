@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from 'axios';
 
 
 export const fetch_global_news = createAsyncThunk("fetchglobalnews", async () => {
-    const res = await fetch("https://inshorts-news-jr964xyhw-sumanjay.vercel.app/news?category=world");
-    const data = await res.json();
-    return data.data;
+    const res = await axios.get("https://newzify-backend.vercel.app/");
+    // const data = await res.json();
+    return res.data;
 });
 
 const globalnewsSlice = createSlice({
@@ -19,7 +20,7 @@ const globalnewsSlice = createSlice({
             state.data = action.payload;
             state.isloading = false;
         }),
-        builder.addCase(fetch_global_news.pending, (state, action) => {
+        builder.addCase(fetch_global_news.pending, (state) => {
             state.isloading = true;
         }),
         builder.addCase(fetch_global_news.rejected, (state, action) => {

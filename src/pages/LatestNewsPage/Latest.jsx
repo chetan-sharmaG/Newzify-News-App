@@ -15,12 +15,17 @@ const Latest = () => {
   const dispatch = useDispatch(); // Dispatch function for Redux
   const [latestNews, setLatestNews] = useState(null) // State to store the latest news
   const latestNewsState = useSelector((state) => state.latestnews); // State from Redux store
+  const [error,setError]= useState(false)
 
   // Fetches the data from the API if the state is empty
   useEffect(() => {
-    if (latestNewsState.data.length > 0) {
+    if (!latestNewsState.isError ) {
       setLatestNews(latestNewsState.data)
-    } else {
+    }
+    else if(latestNewsState.isError){
+      setError(true)
+    }
+    else {
       dispatch(fetch_latest_news()) // Dispatches the fetchnews action
       console.log("calling dispatch")
     }
@@ -45,6 +50,7 @@ const Latest = () => {
                             </div>
                         </div>}
           {/* Maps over the latest news and displays it in a grid layout */}
+          {error && <h1>Something went wrong</h1>}
           {latestNews &&
             latestNews.map((item, index) => {
               return (
