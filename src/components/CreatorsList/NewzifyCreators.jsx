@@ -4,9 +4,9 @@ const creators = [
   {
     name: 'Chetan Sharma',
     image: 'https://chetan-portfolio-woad.vercel.app/static/media/userImage.2e104f080288a4123dde.JPG',
-    github: 'https://github.com/chetan07chauhan',
-    linkedin: 'https://www.linkedin.com/in/chetan-sharma-07/',
-    website: 'https://chetan-portfolio-woad.vercel.app/',
+    github: 'https://github.com/chetan-sharmaG',
+    linkedin: 'https://www.linkedin.com/in/chetan-sharma-a098281a0/',
+    website: 'https://www.sharmachetan.dev/',
   },
   // Add more creators as needed
 ];

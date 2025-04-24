@@ -12,14 +12,14 @@ const Global = () => {
   const [globaldata, setGlobaldata] = useState([]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !isError) {
       if (globalnewsState.data.length === 0) {
         dispatch(fetch_global_news());
       } else {
         setGlobaldata(globalnewsState.data.articles);
       }
     }
-  }, [globalnewsState, isLoading, dispatch]);
+  }, [globalnewsState, isLoading, dispatch.isError]);
 
   const mainHeadline = useMemo(() => globaldata?.[0], [globaldata]);
   const secondaryHeadlines = useMemo(() => globaldata?.slice(1), [globaldata]);
@@ -57,7 +57,7 @@ const Global = () => {
           <div className="grid lg:grid-cols-3 grid-cols-1 gap-6">
             {/* Main Headline */}
             <a href={mainHeadline.sourceUrl} target="_blank" rel="noopener noreferrer" className="col-span-2 flex flex-col gap-3 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-              <img src={mainHeadline.imageUrl} alt={mainHeadline.title} className="w-full h-[350px] object-cover" />
+              <img src={mainHeadline.imageUrl} alt={mainHeadline.title} className="w-full h-[300px] object-cover" />
               <div className="p-4 flex flex-col gap-2">
                 <div className="text-sm text-gray-500 flex items-center gap-2">
                   <span className="font-semibold text-gray-700">{mainHeadline.authorName}</span>
@@ -75,8 +75,8 @@ const Global = () => {
                 <a key={item.title} href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex gap-3 rounded-xl hover:bg-gray-100 transition-all">
                   <img src={item.imageUrl} alt={item.title} className="w-32 h-24 object-cover rounded-lg flex-shrink-0" />
                   <div className="flex flex-col justify-between">
-                    <div className="text-sm text-gray-500 flex items-center gap-2">
-                      <span className="font-semibold text-gray-700">{item.authorName}</span>
+                    <div className="lg:flex text-sm text-gray-500 hidden items-center gap-2">
+                      <span className="font-semibold text-gray-700">{item.authorName || 'Unknown'}</span>
                       &#x2022;
                       <span>{getRelativeTime(item.createdAt)}</span>
                     </div>

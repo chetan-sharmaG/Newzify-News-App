@@ -6,18 +6,18 @@ import { Link } from "react-router-dom";
 
 const Sports = () => {
   const dispatch = useDispatch();
-  const { data, isloading } = useSelector((state) => state.sportnews);
+  const { data, isloading , isError} = useSelector((state) => state.sportnews);
   const [sportsNews, setSportsNews] = useState([]);
 
   useEffect(() => {
-    if (!isloading) {
+    if (!isloading && !isError) {
       if (data?.articles?.length > 0) {
         setSportsNews(data.articles);
       } else {
         dispatch(fetch_sports_news());
       }
     }
-  }, [data, isloading]);
+  }, [data, isloading, isError, dispatch]); 
 
   return (
     <div className="w-full pl-3 flex flex-col gap-6">

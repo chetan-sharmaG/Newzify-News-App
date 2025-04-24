@@ -3,6 +3,7 @@ import Marquee from 'react-fast-marquee';
 
 const Header = () => {
   const [randomNews, setRandomNews] = useState([]);
+    const [visible,setVisible] = useState(false)
 
   const fetchData = async () => {
     try {
@@ -13,6 +14,7 @@ const Header = () => {
       if (allArticles.length) {
         const shuffled = allArticles.sort(() => 0.5 - Math.random()); // Shuffle for randomness
         setRandomNews(shuffled.slice(0, 10)); // Get top 10 random articles
+        setVisible(true)
       }
     } catch (error) {
       console.error('Error fetching news:', error);
@@ -24,8 +26,8 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="w-full bg-[#EEEAEA] my-8 rounded-lg mx-auto p-2 flex flex-col items-center justify-center">
-      <Marquee pauseOnHover gradient={false} speed={50}>
+    <div style={{animation: visible ? 'fade-in 1s ease-in-out' : ''}} className="w-full bg-white shadow  my-8 rounded-lg mx-auto p-0 flex flex-col items-center justify-center">
+      <Marquee pauseOnHover gradient={false} speed={50} style={{display: visible ? 'flex' : 'none'}}>
         <h1 className="md:text-xl font-bold text-red-700 mr-6">News Update:</h1>
         {randomNews.map((item, index) => (
           <a
@@ -33,7 +35,7 @@ const Header = () => {
             href={item.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-6 text-sm md:text-base font-medium text-gray-800 hover:text-red-600"
+            className="flex items-center gap-1 px-6 text-sm md:text-base font-medium text-gray-800 hover:text-red-600"
           >
             <img
               src={item.source_icon}

@@ -58,9 +58,9 @@ const TopHeadline = () => {
     return (
         <>
             {headlines.length > 0 && (
-                <div className="relative flex flex-col lg:flex-row lg:h-[600px] gap-4 mt-12 mb-12 px-4 z-10">
+                <div className="relative flex flex-col lg:flex-row lg:h-[450px] gap-4 mt-12 mb-12 px-4 z-10">
                     {/* Main Image Block */}
-                    <div className="relative w-full lg:w-[60%] h-[400px] lg:h-full overflow-hidden rounded-2xl shadow-2xl group">
+                    <div className="relative w-full lg:w-[60%] h-[450px] lg:h-full overflow-hidden rounded-2xl shadow-2xl group">
                         <img
                             src={mainHeadline.imageUrl}
                             alt="Main Headline"
@@ -72,11 +72,11 @@ const TopHeadline = () => {
                                 <span>&#x2022;</span>
                                 <span>{getRelativeTime(mainHeadline.createdAt)}</span>
                             </div>
-                            <h1 className="text-3xl lg:text-5xl font-extrabold leading-snug cursor-pointer " onClick={() => window.open(mainHeadline.sourceUrl, '_blank')}>
+                            <h1 className="text-3xl lg:text-4xl font-extrabold leading-snug cursor-pointer " onClick={() => window.open(mainHeadline.sourceUrl, '_blank')}>
                                 {mainHeadline.title}
                             </h1>
-                            <p className="line-clamp-3 mt-2 text-gray-300 text-sm lg:text-base">{mainHeadline.content}</p>
-                            <div className="mt-4 flex justify-between items-center">
+                            <p className="line-clamp-3 mt-2 text-gray-300 text-sm cursor-pointer lg:text-base" onClick={() => window.open(mainHeadline.sourceUrl, '_blank')}>{mainHeadline.content}</p>
+                            <div className="mt-4 flex justify-between items-center"> 
                                 {/* <span className="text-sm text-gray-400">- {mainHeadline.date}</span> */}
                                 <div className="flex gap-4">
                                     <img
@@ -110,23 +110,23 @@ const TopHeadline = () => {
                                 //     backgroundRepeat: 'no-repeat',
                                 //     backgroundPosition: 'right',
                                 // }}
-                                className="bg-white  flex-row-reverse rounded-xl min-h-[140px] shadow hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex gap-4 overflow-hidden"
+                                className="bg-white  flex-row-reverse rounded-xl min-h-[97px]  shadow hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex gap-4 overflow-hidden"
                             >
                                 <img
                                     src={news.imageUrl}
                                     alt={news.title}
-                                    className="w-1/3  object-cover "
+                                    className="w-1/4  object-cover "
                                 />
-                                <div className="flex flex-col p-3 w-2/3 ">
+                                <div className="flex flex-col p-3 w-3/4 ">
                                     <div className="text-sm text-gray-500 flex items-center gap-2">
-                                        <span>{news.sourceName}</span>
+                                        <span style={{fontWeight: 'bold'}}>{news.sourceName}</span>
                                         <span>&#x2022;</span>
                                         <span>{getRelativeTime(news.createdAt)}</span>
                                     </div>
                                     <h2 className="font-semibold text-black line-clamp-2 mt-1">
                                         {news.title}
                                     </h2>
-                                    <p className="text-xs text-gray-600 mt-1 ml-2">- {news.authorName}</p>
+                                    {/* <p className="text-xs text-gray-600 mt-1 ml-2">- {news.authorName}</p> */}
                                 </div>
                             </a>
                         ))}

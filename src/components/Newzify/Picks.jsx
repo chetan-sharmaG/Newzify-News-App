@@ -58,7 +58,7 @@ const Picks = () => {
       </a>
 
       {/* Grid Picks */}
-      <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-6 mt-10">
+      <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-6 mt-5">
         {picknews.slice(1, 5).map((item) => (
           <a
             href={item.sourceUrl}
