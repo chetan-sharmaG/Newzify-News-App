@@ -14,18 +14,18 @@ const Homepage = () => {
     return (
         <div className='w-full'>
             <Navbar />
-            <div className='lg:w-[90vw] w-[90vw] mx-auto'>
+            <div className='lg:w-[90vw] w-[90vw] mx-auto '>
                 <Header />
                 <TopHeadline />
-                <LatestNews />
-                <Global />
-                <Picks />
+                <Global/>
+                <Picks/>
                 <div className='flex w-full lg:flex-row flex-col mt-40 h-fit'>
                     <Business />
                     <Sports />
                 </div>
+               
                 <NewzifyCreators />
-                {/* <Subscribe /> */}
+                <Subscribe />
             </div>
                 <Footer />
         </div>

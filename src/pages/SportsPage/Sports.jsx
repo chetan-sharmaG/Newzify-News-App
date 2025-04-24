@@ -10,14 +10,18 @@ const Sports = () => {
 
   const dispatch = useDispatch()
   const sportsnewState = useSelector(state => state.sportnews)
+  const isLoading = sportsnewState.isloading
   const [sportsnew, setsportsnew] = useState()
   console.log(sportsnewState)
   useEffect(() => {
-    if (sportsnewState.data.length > 0) {
-      setsportsnew(sportsnewState.data)
-    } else {
-      dispatch(fetch_sports_news())
-      console.log("calling dispatch")
+    if(!isLoading){
+      
+      if (sportsnewState.data?.articles?.length > 0) {
+        setsportsnew(sportsnewState.data.articles)
+      } else {
+        dispatch(fetch_sports_news())
+        console.log("calling dispatch")
+      }
     }
 
   }, [sportsnewState])
@@ -52,7 +56,7 @@ const Sports = () => {
                   <span className='flex gap-2  '><h1 className='' >Inshorts</h1>&#x2022;&nbsp;{getRelativeTime(item.date, item.time)}</span>
                   <span className='lg:text-2xl md:text-xl text-lg font-semibold text-balance line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden font-poppins '>{item.title}</span>
                   <span className='line-clamp-10 whitespace-pre-line text-ellipsis overflow-hidden md:text-base text-sm'>{item.content}</span>
-                  <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden '>-{item.author}</span>
+                  <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden '>-{item.authorName}</span>
                 </div>
 
               </a>

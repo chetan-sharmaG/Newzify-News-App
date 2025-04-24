@@ -27,7 +27,7 @@ const miscelleneousnewsSlice = createSlice({
 });
 
 export const fetch_miscelleneous_news = createAsyncThunk("fetchmiscelleneousnews", async () => {
-    const res = await fetch("https://inshorts-news-jr964xyhw-sumanjay.vercel.app/news?category=miscellaneous");
+    const res = await fetch("https://inshorts-nrddnp0p3-sumitkolhe.vercel.app/news/trending");
     const data = await res.json();
     return data.data;
 });

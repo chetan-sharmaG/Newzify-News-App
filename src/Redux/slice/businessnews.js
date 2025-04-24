@@ -1,20 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetch_business_news = createAsyncThunk("fetchbusinessnews", async () => {
-    const res = await fetch("https://inshorts-news-jr964xyhw-sumanjay.vercel.app/news?category=business");
+    const res = await fetch("https://inshorts-nrddnp0p3-sumitkolhe.vercel.app/news/topics/politics");
     const data = await res.json();
     return data.data;
 });     
 
-
+const initialState = {
+    isloading: false,
+    data: [],
+    isError: false
+} 
 
 const businessnewsSlice = createSlice({
     name: "businessnews",
-    initialState: {
-        isloading: false,
-        data: [],
-        isError: false
-    },
+    initialState,
     extraReducers: (builder) => {
         builder.addCase(fetch_business_news.fulfilled, (state, action) => {
             state.data = action.payload;

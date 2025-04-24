@@ -34,8 +34,8 @@ const SearchBlog = () => {
     }, [])
 
     useEffect(() => {
-        if(gnewsHeadlines.data.length > 0){
-            settopHeadlines(gnewsHeadlines.data)
+        if(gnewsHeadlines.data?.articles?.length > 0){
+            settopHeadlines(gnewsHeadlines.data.articles)
         }else{
             console.log("dispatching")
             dispatch(fetch_gnews_headlines())

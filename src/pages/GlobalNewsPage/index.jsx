@@ -9,13 +9,17 @@ const Global = () => {
 
     const dispatch = useDispatch()
     const globalnewsState = useSelector((state) => state.globalnews)
+    const isLoading = globalnewsState.isloading
     const [globaldata, setglobaldata] = useState()
 
     useEffect(() => {
-        if (globalnewsState.data.length === 0) {
-            dispatch(fetch_global_news())
-        } else {
-            setglobaldata(globalnewsState.data)
+        if(!isLoading){
+            
+            if (globalnewsState.data?.articles?.length === 0) {
+                dispatch(fetch_global_news())
+            } else {
+                setglobaldata(globalnewsState.data.articles)
+            }
         }
     }, [globalnewsState])
 
@@ -47,7 +51,7 @@ const Global = () => {
                                         <span className='flex gap-2  '><h1 className='' >Inshorts</h1>&#x2022;&nbsp;{getRelativeTime(item.date, item.time)}</span>
                                         <span className='lg:text-2xl md:text-xl text-lg font-semibold text-balance line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden font-poppins '>{item.title}</span>
                                         <span className='line-clamp-10 whitespace-pre-line text-ellipsis overflow-hidden md:text-base text-sm'>{item.content}</span>
-                                        <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden '>-{item.author}</span>
+                                        <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden '>-{item.authorName}</span>
                                     </div>
 
                                 </a>

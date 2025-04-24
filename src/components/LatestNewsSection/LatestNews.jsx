@@ -9,14 +9,19 @@ const LatestNews = () => {
     const dispatch = useDispatch()
     const [latestNews, setLatestNews] = useState(null)
 
+    // const {latestNewsState,isLoading} = useSelector((state) => state.LatestNews)
     const latestNewsState = useSelector((state) => state.latestnews)
+    const isLoading = latestNewsState.isloading
 
     useEffect(() => {
-        if (latestNewsState.data.length > 0) {
-            setLatestNews(latestNewsState.data)
-        } else {
-            dispatch(fetch_latest_news())
-            console.log("calling dispatch")
+        if(!isLoading){
+            
+            if (latestNewsState.data?.articles?.length > 0) {
+                setLatestNews(latestNewsState.data.articles)
+            } else {
+                dispatch(fetch_latest_news())
+                console.log("calling dispatch")
+            }
         }
 
     }, [latestNewsState])
@@ -43,7 +48,7 @@ const LatestNews = () => {
                                         <span className='flex gap-2'><h1 >Inshorts</h1>&#x2022;&nbsp;{getRelativeTime(item.date, item.time)}</span>
                                         <span className='text-2xl font-semibold text-balance  line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden font-poppins '>{item.title}</span>
                                         <span className='line-clamp-5 whitespace-pre-line text-ellipsis overflow-hidden'>{item.content}</span>
-                                        <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden '>-{item.author}</span>
+                                        <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden '>-{item.authorName}</span>
                                     </div>
 
                                 </a>

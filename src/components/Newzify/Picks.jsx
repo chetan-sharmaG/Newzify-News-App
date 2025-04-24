@@ -1,110 +1,93 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { fetch_picked_news } from '../../Redux/slice/pickedNews'
-import getRelativeTime from '../../Utils/CommonFunc'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetch_picked_news } from '../../Redux/slice/pickedNews';
+import getRelativeTime from '../../Utils/CommonFunc';
 
 const Picks = () => {
+  const dispatch = useDispatch();
+  const { data, isloading } = useSelector((state) => state.pickednews);
+  const [picknews, setPicknews] = useState([]);
 
-    const dispatch = useDispatch()
-    const pickedNewsState = useSelector(state => state.pickednews)
-    const [picknews, setpicknews] = useState([])
-
-    useEffect(() => {
-        if (pickedNewsState.data.length > 0) {
-            setpicknews(pickedNewsState.data)
-        } else {
-            dispatch(fetch_picked_news())
-        }
-
-    }, [pickedNewsState])
-    const fetchData = async () => {
-        let a = await fetch('https://inshorts-news-jr964xyhw-sumanjay.vercel.app/news?category=national')
-        let res = await a.json()
-        if (res) {
-
-            // console.log(res.data)
-            // var data = res.data.slice(0, 5).map((item, index) => {
-            //     setpicknews([...picknews, item])
-            // })
-            // // setpicknews(data)
-            setpicknews(res.data)
-
-        }
+  useEffect(() => {
+    if (!isloading) {
+      if (data?.articles?.length > 0) {
+        setPicknews(data.articles);
+      } else {
+        dispatch(fetch_picked_news());
+      }
     }
+  }, [data, isloading, dispatch]);
 
+  if (!picknews.length) return null;
 
-    return (
-        <>
-            <span className=' flex w-full items-center p-1 justify-between  mt-20 mb-10 '>
-                <h1 className='lg:text-5xl md:text-4xl sm:text-3xl text-2xl  font-semibold'>Newzify's Pick</h1>
-                <Link to='/newzifyPicks' className='flex gap-1 hover:scale-110 cursor-pointer'>See all <img loading='lazy' width="30" height="30" src="https://img.icons8.com/laces/30/arrow.png" alt="arrow" /></Link ></span>
-            {picknews.length > 0 &&
-                <>
-                    <a href={picknews[0].readMoreUrl} className=' w-full flex h-[550px] items-end relative'>
-                        <img loading='lazy' src={picknews[0].imageUrl}
-                            className='w-full h-full  rounded-2xl brightness-[0.5] absolute top-0 z-[-1]'></img>
-                        <div className='flex flex-col w-full gap-3 px-1 py-2 m-3  text-white'>
-                            <span className='flex gap-2'><h1 >InShort</h1>&#x2022;&nbsp;{getRelativeTime(picknews[0].date, picknews[0].time)}</span>
-                            <span className='text-3xl font-semibold text-balance line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden font-poppins'>{picknews[0].title}</span>
-                            <span className='line-clamp-1 text-lg whitespace-pre-line text-ellipsis overflow-hidden'>{picknews[0].content}</span>
-                            <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden'>-{picknews[0].author}</span>
-                        </div>
-                    </a>
-                    <div className='flex  lg:flex-row flex-col mt-7 lg:divide-y-0 divide-y-2 lg:justify-between w-full md:min-h-[350px] lg:h-[350px] h-fit'>
+  return (
+    <div className="w-full mt-20 mb-10">
+      {/* Header */}
+      <div className="flex items-center justify-between px-2 mb-6">
+        <h1 className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl font-semibold">Newzify's Pick</h1>
+        <Link to="/news/EXPLAINERS" className="flex gap-1 hover:scale-110 transition-transform cursor-pointer">
+          See all
+          <img loading="lazy" width="30" height="30" src="https://img.icons8.com/laces/30/arrow.png" alt="arrow" />
+        </Link>
+      </div>
 
-                        {picknews.map((item, index) => {
-                            if (index < 5 && index != 0) {
-                                return (
-                                    <a href={item.readMoreUrl} key={item.title} className='flex flex-col lg:w-[23%] w-full md:py-5 lg:py-0 py-3   h-fit'>
-                                        <img loading='lazy' className='md:h-[350px] md:mx-auto h-[310px] w-full aspect-square rounded-2xl object-cover' src={item.imageUrl}></img>
-                                        <div className='flex flex-col w-full gap-1 px-0 py-2 m-1  h-fit '>
-                                            <span className='flex gap-2'><h1 >InShort</h1>&#x2022;&nbsp;{getRelativeTime(item.date, item.time)}</span>
-                                            <span className='text-xl font-semibold text-balance line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden font-poppins'>{item.title}</span>
-                                            <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden'>-{item.author}</span>
-                                        </div>
-                                    </a>
-                                )
-                            }
-                        })}
-                        {/* <div className='flex flex-col w-[23%]  h-fit'>
-                            <img className='h-[55%] w-full aspect-square rounded-2xl object-cover' src='https://nis-gs.pix.in/inshorts/images/v1/variants/webp/m/2024/06_jun/5_wed/img_1717604904288_634.webp?'></img>
-                            <div className='flex flex-col w-full gap-1 px-0 py-2 m-1  h-fit '>
-                                <span className='flex gap-2'><h1 >InShort</h1>&#x2022;&nbsp;6 hours ago</span>
-                                <span className='text-xl font-semibold text-balance line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden'>Bear captured in Chamaraj Nagar district relocated to Bandipur</span>
-                                <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden'>-System User</span>
-                            </div>
-                        </div>
-                        <div className='flex flex-col w-[23%]  h-fit'>
-                            <img className='h-[55%] w-full aspect-square rounded-2xl object-cover' src='https://nis-gs.pix.in/inshorts/images/v1/variants/jpg/m/2024/06_jun/5_wed/img_1717603551397_956.jpg?'></img>
-                            <div className='flex flex-col w-full gap-1 px-0 py-2 m-1  h-fit '>
-                                <span className='flex gap-2'><h1 >InShort</h1>&#x2022;&nbsp;6 hours ago</span>
-                                <span className='text-xl font-semibold text-balance line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden'>Israel warns of 'very intense operation' along Lebanon border</span>
-                                <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden'>-Disha Jana</span>
-                            </div>
-                        </div>
-                        <div className='flex flex-col w-[23%]  h-fit'>
-                            <img className='h-[55%] w-full aspect-square rounded-2xl object-cover' src='https://nis-gs.pix.in/inshorts/images/v1/variants/jpg/m/2024/06_jun/5_wed/img_1717603490428_542.jpg?'></img>
-                            <div className='flex flex-col w-full gap-1 px-0 py-2 m-1  h-fit '>
-                                <span className='flex gap-2'><h1 >InShort</h1>&#x2022;&nbsp;6 hours ago</span>
-                                <span className='text-xl font-semibold text-balance line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden'>What does losing security deposit in election mean?</span>
-                                <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden'>-Deepika Bhatt</span>
-                            </div>
-                        </div>
-                        <div className='flex flex-col w-[23%]  h-fit'>
-                            <img className='h-[55%] w-full aspect-square rounded-2xl object-cover' src='https://nis-gs.pix.in/inshorts/images/v1/variants/jpg/m/2024/06_jun/5_wed/img_1717604283296_589.jpg?'></img>
-                            <div className='flex flex-col w-full gap-1 px-0 py-2 m-1  h-fit '>
-                                <span className='flex gap-2'><h1 >InShort</h1>&#x2022;&nbsp;6 hours ago</span>
-                                <span className='text-xl font-semibold text-balance line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden'>Axar Patel pulls off caught and bowled to dismiss Barry vs Ireland</span>
-                                <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden'>-System User</span>
-                            </div>
-                        </div> */}
+      {/* Hero Pick (glassmorphism-style) */}
+      <a
+        href={picknews[0].sourceUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-full relative bg-gray-900/70 backdrop-blur-md rounded-2xl overflow-hidden flex flex-col lg:flex-row lg:h-[350px] shadow-lg hover:shadow-2xl transition-all"
+      >
+        <div className="flex flex-col justify-between p-6 lg:w-1/2 w-full text-white z-10">
+          <div className="flex gap-2 text-sm text-gray-300 mb-2">
+            <span>{picknews[0].sourceName}</span>&#x2022;
+            <span>{getRelativeTime(picknews[0].createdAt)}</span>
+          </div>
+          <h2 className="text-3xl font-semibold line-clamp-3">{picknews[0].title}</h2>
+          <p className="text-md mt-2 line-clamp-2">{picknews[0].content}</p>
+          <span className="mt-2 font-semibold text-sm text-gray-200">
+            - {picknews[0].authorName || picknews[0].author || 'Unknown'}
+          </span>
+        </div>
+        <img
+          src={picknews[0].imageUrl}
+          alt={picknews[0].title}
+          className="object-cover lg:w-1/2 w-full h-[250px] lg:h-full brightness-[0.7]"
+        />
+      </a>
 
-                    </div>
-                </>
-            }
-        </>
-    )
-}
+      {/* Grid Picks */}
+      <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-6 mt-10">
+        {picknews.slice(1, 5).map((item) => (
+          <a
+            href={item.sourceUrl}
+            key={item.title}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col"
+          >
+            <img
+              src={item.imageUrl}
+              alt={item.title}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-4 flex flex-col gap-2">
+              <div className="flex text-xs text-gray-500 gap-2">
+                <span>{item.sourceName}</span>&#x2022;
+                <span>{getRelativeTime(item.createdAt)}</span>
+              </div>
+              <h3 className="text-lg font-semibold line-clamp-2">{item.title}</h3>
+              <p className="text-sm text-gray-600 line-clamp-2">{item.content}</p>
+              <span className="text-sm font-medium text-gray-700 mt-auto">
+                - {item.authorName || item.author || 'Unknown'}
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
 
-export default Picks
+export default Picks;

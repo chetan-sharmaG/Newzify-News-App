@@ -9,13 +9,17 @@ const Businesspage = () => {
 
     const dispatch = useDispatch()
     const businessNewsState = useSelector(state => state.businessnews)
+    const isLoading = businessNewsState.isloading
     const [businessnew, setbusinessnew] = useState([])
 
     useEffect(() => {
-        if(businessNewsState.data.length>0){
-            setbusinessnew(businessNewsState.data)
-        }else{
-            dispatch(fetch_business_news())
+        if(!isLoading){
+
+            if(businessNewsState.data?.articles?.length>0){
+                setbusinessnew(businessNewsState.data.articles)
+            }else{
+                dispatch(fetch_business_news())
+            }
         }
 
     }, [businessNewsState])
@@ -46,7 +50,7 @@ const Businesspage = () => {
                                         <span className='flex gap-2  '><h1 className='' >Inshorts</h1>&#x2022;&nbsp;{getRelativeTime(item.date, item.time)}</span>
                                         <span className='lg:text-2xl md:text-xl text-lg font-semibold text-balance line-clamp-3 whitespace-pre-line text-ellipsis overflow-hidden font-poppins '>{item.title}</span>
                                         <span className='line-clamp-10 whitespace-pre-line text-ellipsis overflow-hidden md:text-base text-sm'>{item.content}</span>
-                                        <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden '>-{item.author}</span>
+                                        <span className='font-semibold line-clamp-1 whitespace-pre-line text-ellipsis overflow-hidden '>-{item.authorName}</span>
                                     </div>
 
                                 </a>

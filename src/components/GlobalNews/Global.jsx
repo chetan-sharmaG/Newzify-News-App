@@ -1,86 +1,96 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetch_global_news } from '../../Redux/slice/gloabalnews'
-import { Link } from 'react-router-dom'
-import getRelativeTime from '../../Utils/CommonFunc'
+import React, { useEffect, useState, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetch_global_news } from '../../Redux/slice/gloabalnews';
+import { Link } from 'react-router-dom';
+import getRelativeTime from '../../Utils/CommonFunc';
 
 const Global = () => {
+  const dispatch = useDispatch();
+  const globalnewsState = useSelector((state) => state.globalnews);
+  const isLoading = globalnewsState.isloading;
+  const isError = globalnewsState.isError;
+  const [globaldata, setGlobaldata] = useState([]);
 
-    const dispatch = useDispatch()
-    const globalnewsState = useSelector((state) => state.globalnews)
-    const [globaldata, setglobaldata] = useState()
+  useEffect(() => {
+    if (!isLoading) {
+      if (globalnewsState.data.length === 0) {
+        dispatch(fetch_global_news());
+      } else {
+        setGlobaldata(globalnewsState.data.articles);
+      }
+    }
+  }, [globalnewsState, isLoading, dispatch]);
 
-    useEffect(() => {
+  const mainHeadline = useMemo(() => globaldata?.[0], [globaldata]);
+  const secondaryHeadlines = useMemo(() => globaldata?.slice(1), [globaldata]);
 
-        if (globalnewsState.data.length === 0) {
-            dispatch(fetch_global_news())
-        }
-        else {
-            setglobaldata(globalnewsState.data)
-        }
-    }, [globalnewsState])
-
+  if (isLoading) {
     return (
-        <>
-            <div className='md:block '>
-                <span className=' flex w-full items-center p-1 justify-between   my-10 '>
-                    <h1 className='lg:text-4xl  font-poppins md:text-3xl sm:text-xl text-lg font-semibold'>Must Read</h1>
-                    <Link to='/globalnews' className='flex gap-1 hover:scale-110 cursor-pointer'>See all <img loading='lazy' width="30" height="30" src="https://img.icons8.com/laces/30/arrow.png" alt="arrow" /></Link>
-                </span>
-                <div className='w-full lg:min-h-[500px] md:min-h-[400px] justify-between  flex md:flex-col gap-y-10 md:flex-row2 flex-row min-h-[500px]   '>
-                    {globaldata &&
+      <div className="w-full h-[300px] flex justify-center items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gray-800"></div>
+      </div>
+    );
+  }
 
-                        <>
-                            <div className='flex lg:flex-row flex-col' >
-                                <div className='lg:w-[58%] md:w-full  h-[500px]'>
-                                    <div className='w-full h-[55%] '>
-                                        <img className='w-full h-full object-cover rounded-xl' src={globaldata[0].imageUrl} alt={globaldata[0].title} />
-                                    </div>
-                                    <div className='w-full h-[45%] flex flex-col gap-3 py-1 '>
-                                        <span className='flex gap-2 mt-1 items-center  md:text-sm text-[#ADADAD]'><h1 className='font-medium text-slate-700 lg:text-base' >{globaldata[0].author}</h1>&#x2022;&nbsp;{getRelativeTime(globaldata[0].date, globaldata[0].time)}</span>
-                                        <h1 className='text-2xl font-bold'>{globaldata[0].title}</h1>
-                                        <p className='text-base line-clamp-3  font-poppins  whitespace-pre-line  text-ellipsis overflow-hidden '>{globaldata[0].content}</p>
-                                        <p>World</p>
-                                    </div>
-                                </div>
-                                <div className='lg:w-[41%] md:w-full p-1 flex  flex-col md:gap-2 lg:flex-col justify-between min-h-[100px] lg:h-[500px]'>
+  if (isError) {
+    return (
+      <div className="text-center text-red-600 font-semibold mt-5">
+        Failed to load global news. Please try again.
+      </div>
+    );
+  }
 
-                                    {globaldata.map((data, index) => {
-                                        if (index > 0 && index < 4) {
-                                            return (
-                                                <div key={data.title} className='lg:w-full lg:h-[32%] md:w-full md:h-[200px]  '>
-                                                    <div className='flex md:flex-row flex-col w-full lg:gap-0 gap-2 lg:p-0 p-2 justify-between h-full'>
-                                                        <img className='lg:w-[44%] md:w-[55%] h-full object-cover rounded-xl' src={data.imageUrl} alt={globaldata[1].title} />
-                                                        <div className='md:w-[55%] h-full flex flex-col gap-1 px-2 p-1 '>
-                                                            <span className='flex gap-2 mt-1 items-center  md:text-sm text-[#ADADAD]'><h1 className='font-medium text-slate-700 lg:text-base' >{data.author}</h1>&#x2022;&nbsp;{getRelativeTime(data.date, data.time)}</span>
-                                                            <h1 className='lg:text-lg font-bold'>{data.title}</h1>
-                                                            <span className=' lg:hidden  line-clamp-2 text-sm whitespace-pre-line text-ellipsis overflow-hidden'>{data.content}</span>
+  return (
+    <>
+      {globaldata.length > 0 && (
+        <div className="w-full flex flex-col gap-5">
+          {/* Header */}
+          <div className="flex justify-between items-center px-2">
+            <h1 className="lg:text-4xl text-2xl font-semibold">IPL 2025</h1>
+            <Link to="/news/IPL_2025" className="flex items-center gap-2 text-blue-600 hover:scale-110 transition-transform">
+              See all
+              <img width="30" height="30" src="https://img.icons8.com/laces/30/arrow.png" alt="arrow" />
+            </Link>
+          </div>
 
-                                                            <p>World</p>
-                                                        </div>
-                                                    </div>
-                                                </div>)
-                                        }
-                                    })}
-                                    {/* <div className='lg:w-full lg:h-[32%]   '>
-                                <div className='flex w-full justify-between h-full'>
-                                    <img className='lg:w-[44%] h-full object-cover rounded-xl' src={globaldata[1].imageUrl} alt={globaldata[1].title} />
-                                    <div className='w-[55%] h-full flex flex-col gap-1 px-2 p-1 '>
-                                        <span className='flex gap-2 mt-1 items-center  md:text-sm text-[#ADADAD]'><h1 className='font-medium text-slate-700 lg:text-base' >{globaldata[0].author}</h1>&#x2022;&nbsp;{getRelativeTime(globaldata[0].date, globaldata[0].time)}</span>
-                                        <h1 className='text-xl font-bold'>{globaldata[0].title}</h1>
-                                        <p>World</p>
-                                    </div>
-                                </div>
-                            </div> */}
-
-                                </div>
-                            </div>
-                        </>
-                    }
+          {/* Content */}
+          <div className="grid lg:grid-cols-3 grid-cols-1 gap-6">
+            {/* Main Headline */}
+            <a href={mainHeadline.sourceUrl} target="_blank" rel="noopener noreferrer" className="col-span-2 flex flex-col gap-3 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+              <img src={mainHeadline.imageUrl} alt={mainHeadline.title} className="w-full h-[350px] object-cover" />
+              <div className="p-4 flex flex-col gap-2">
+                <div className="text-sm text-gray-500 flex items-center gap-2">
+                  <span className="font-semibold text-gray-700">{mainHeadline.authorName}</span>
+                  &#x2022;
+                  <span>{getRelativeTime(mainHeadline.createdAt)}</span>
                 </div>
-            </div>
-        </>
-    )
-}
+                <h2 className="text-2xl font-bold">{mainHeadline.title}</h2>
+                <p className="text-base text-gray-600 line-clamp-4">{mainHeadline.content}</p>
+              </div>
+            </a>
 
-export default Global
+            {/* Secondary Headlines */}
+            <div className="flex flex-col gap-4 overflow-y-auto lg:max-h-[500px] scrollbar-thin scrollbar-thumb-gray-400 pr-2">
+              {secondaryHeadlines.map((item) => (
+                <a key={item.title} href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="flex gap-3 rounded-xl hover:bg-gray-100 transition-all">
+                  <img src={item.imageUrl} alt={item.title} className="w-32 h-24 object-cover rounded-lg flex-shrink-0" />
+                  <div className="flex flex-col justify-between">
+                    <div className="text-sm text-gray-500 flex items-center gap-2">
+                      <span className="font-semibold text-gray-700">{item.authorName}</span>
+                      &#x2022;
+                      <span>{getRelativeTime(item.createdAt)}</span>
+                    </div>
+                    <h3 className="font-bold text-md line-clamp-2">{item.title}</h3>
+                    <p className="text-sm text-gray-600 line-clamp-2">{item.content}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Global;

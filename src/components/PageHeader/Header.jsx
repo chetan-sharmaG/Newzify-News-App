@@ -1,72 +1,53 @@
-import React, { useEffect, useState } from 'react'
-import Marquee from "react-fast-marquee";
-
+import React, { useEffect, useState } from 'react';
+import Marquee from 'react-fast-marquee';
 
 const Header = () => {
+  const [randomNews, setRandomNews] = useState([]);
 
-    const [news, setnews] = useState()
-    const [randomnews, setrandomnews] = useState()
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://ok.surf/api/v1/cors/news-feed');
+      const result = await response.json();
 
-    function getRandom(news) {
-        const allobject = []
-        for (const category in news) {
-            if (news.hasOwnProperty(category)) {
-                allobject.push(news[category])
-            }
-        }
-        const random = Math.floor(Math.random() * allobject.length)
-        setrandomnews(allobject[random])
-        console.log(allobject[random])
-
+      const allArticles = Object.values(result).flat(); // Flatten arrays from each category
+      if (allArticles.length) {
+        const shuffled = allArticles.sort(() => 0.5 - Math.random()); // Shuffle for randomness
+        setRandomNews(shuffled.slice(0, 10)); // Get top 10 random articles
+      }
+    } catch (error) {
+      console.error('Error fetching news:', error);
     }
-    async function fetchData() {
+  };
 
-        let a = await fetch('https://ok.surf/api/v1/cors/news-feed')
-        let res = await a.json()
-        console.log(res)
-        // setnews(res)
-        const news = res
-        const allobject = []
-        for (const category in news) {
-            if (news.hasOwnProperty(category)) {
-                allobject.push(news[category])
-            }
-        }
-        const random = Math.floor(Math.random() * allobject.length)
-        setrandomnews(allobject[random])
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-    }
+  return (
+    <div className="w-full bg-[#EEEAEA] my-8 rounded-lg mx-auto p-2 flex flex-col items-center justify-center">
+      <Marquee pauseOnHover gradient={false} speed={50}>
+        <h1 className="md:text-xl font-bold text-red-700 mr-6">News Update:</h1>
+        {randomNews.map((item, index) => (
+          <a
+            key={`${item.link}-${index}`}
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-6 text-sm md:text-base font-medium text-gray-800 hover:text-red-600"
+          >
+            <img
+              src={item.source_icon}
+              alt={`${item.source} icon`}
+              width={20}
+              height={20}
+              className="rounded-full object-cover"
+            />
+            <span className="line-clamp-1">{item.source}: {item.title}</span>
+          </a>
+        ))}
+      </Marquee>
+    </div>
+  );
+};
 
-    useEffect(() => {
-        fetchData()
-    }, [])
-
-    return (
-        <>
-            <div className='w-full bg-[#EEEAEA] my-8 rounded-lg mx-auto h-fit p-2 gap-1 flex flex-col items-center justify-center'>
-                <Marquee pauseOnHover>
-
-
-
-                    <h1 className='md:text-xl px-5 font-bold flex flex-wrap items-center text-red-700'>News Update
-                    {randomnews &&
-                            randomnews.map((news, index) => {
-                                return (
-
-                            <a key={news.link} href={news.link} target='_blank' className='line-clamp-1 px-6 whitespace-pre-line text-slate-700 font-medium text-base items-center text-ellipsis flex overflow-hidden cursor-pointer'> &nbsp;
-                                <img width={25} className='rounded-full object-cover' height={25} src={news.source_icon}></img>&nbsp;{news.source}:-&nbsp;{news.title}</a>
-                            )
-                            })
-                            }
-                        </h1>
-
-
-                </Marquee>
-
-
-            </div>
-        </>
-    )
-}
-
-export default Header
+export default Header;
