@@ -15,6 +15,7 @@ const Latest = () => {
   const dispatch = useDispatch(); // Dispatch function for Redux
   const [latestNews, setLatestNews] = useState(null) // State to store the latest news
   const latestNewsState = useSelector((state) => state.latestnews); // State from Redux store
+  const [error,setError]= useState(false)
 
   // Fetches the data from the API if the state is empty
   useEffect(() => {
@@ -45,6 +46,7 @@ const Latest = () => {
                             </div>
                         </div>}
           {/* Maps over the latest news and displays it in a grid layout */}
+          {error && <h1>Something went wrong</h1>}
           {latestNews &&
             latestNews.map((item, index) => {
               return (

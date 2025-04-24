@@ -327,7 +327,7 @@ const SearchBlog = () => {
                             )
                         })}
                 </div>
-                <div className={`w-[26%]  gap-4 overflow-y-clip ${searchResponse.length > 0 ? "" : "h-[500px]"}  justify-start flex flex-col  `}>
+                <div className={`w-[26%]  gap-4 overflow-y-clip ${searchResponse.articles.length > 0 ? "" : "h-[500px]"}  justify-start flex flex-col  `}>
                     <h1 className='text-xl'>Top Headlines</h1>
                     {topHeadlines.length > 0 &&
                        topHeadlines.map((item, index) => {

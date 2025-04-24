@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from 'axios';
 
 
 export const fetch_global_news = createAsyncThunk("fetchglobalnews", async () => {
@@ -19,7 +20,7 @@ const globalnewsSlice = createSlice({
             state.data = action.payload;
             state.isloading = false;
         }),
-        builder.addCase(fetch_global_news.pending, (state, action) => {
+        builder.addCase(fetch_global_news.pending, (state) => {
             state.isloading = true;
         }),
         builder.addCase(fetch_global_news.rejected, (state, action) => {
